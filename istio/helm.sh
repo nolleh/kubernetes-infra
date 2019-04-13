@@ -4,7 +4,8 @@ cd $ISTIO_HOME
 
 kubectl apply -f install/kubernetes/helm/helm-service-account.yaml
 
-helm init --service-account tiller --upgrade
+helm init --service-account tiller
+#helm init --service-account tiller --upgrade
 
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
 
