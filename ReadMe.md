@@ -61,3 +61,15 @@ sudo mv linux-amd64/helm /usr/local/bin/helm
 https://istio.io/docs/setup/kubernetes/download/
 
 curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.2 sh -
+
+
+## Debug Envoy
+envoy admin page 
+
+kubectl -n istio-system port-forward [INGRESS-POD] 15000
+
+istio-injection 
+
+kubectl label namespace dev istio-injection=enabled
+kubectl get namespace -L istio-injection
+---
