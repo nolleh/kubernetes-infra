@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# follow spinnaker setup
+
+CONTEXT=$(kubectl config current-context)
+
+# This service account uses the ClusterAdmin role -- this is not necessary, 
+# more restrictive roles can by applied.
+kubectl apply --context $CONTEXT \
+    -f https://spinnaker.io/downloads/kubernetes/service-account.yml
+
+TOKEN=$(kubectl get secret --context $CONTEXT \
+   $(kubectl get serviceaccount spinnaker-service-account \
+       --context $CONTEXT \
+       -n spinnaker \
+       -o jsonpath='{.secrets[0].name}') \
+   -n spinnaker \
+   -o jsonpath='{.data.token}' | base64 --decode)
+
+kubectl config set-credentials ${CONTEXT}-token-user --token $TOKEN
+
+kubectl config set-context $CONTEXT --user ${CONTEXT}-token-user
+
+# 2. Adding an account
+hal config provider kubernetes enable
+
+hal config provider kubernetes account add my-k8s-v2-account \
+    --provider-version v2 \
+    --context $CONTEXT
+
+hal config features edit --artifacts true
+
+
+# 3. Choose Env
+hal config deploy edit --type distributed --account-name $ACCOUNT
+
+# 4. Choose a storage service
+# service account 
+
+SERVICE_ACCOUNT_NAME=spinnaker-gcs-account
+SERVICE_ACCOUNT_DEST=~/.gcp/gcs-account.json
+
+gcloud iam service-accounts create \
+    $SERVICE_ACCOUNT_NAME \
+    --display-name $SERVICE_ACCOUNT_NAME
+
+SA_EMAIL=$(gcloud iam service-accounts list \
+    --filter="displayName:$SERVICE_ACCOUNT_NAME" \
+    --format='value(email)')
+
+PROJECT=$(gcloud info --format='value(config.project)')
+
+gcloud projects add-iam-policy-binding $PROJECT \
+    --role roles/storage.admin --member serviceAccount:$SA_EMAIL
+
+mkdir -p $(dirname $SERVICE_ACCOUNT_DEST)
+
+gcloud iam service-accounts keys create $SERVICE_ACCOUNT_DEST \
+    --iam-account $SA_EMAIL
+
+# see https://cloud.google.com/storage/docs/bucket-locations
+BUCKET_LOCATION=asia-northeast1
+
+hal config storage gcs edit --project $PROJECT \
+    --bucket-location $BUCKET_LOCATION \
+    --json-path $SERVICE_ACCOUNT_DEST
+
+hal config storage edit --type gcs
+
+# 5. Deploy 
+hal config version edit --version 1.13.1
+hal deploy apply

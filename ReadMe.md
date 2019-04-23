@@ -4,11 +4,12 @@ in wsl(ubuntu18.04)
 ## Overview
 - istio
   - sample
+- elk
 - node
 - redis
 
-## Install Step
-0. gcloud SDK 
+## PreRequisions
+### 1. gcloud SDK 
 https://cloud.google.com/sdk/downloads
 
 ```
@@ -25,18 +26,27 @@ gcloud components update
 # if there is some trouble, do gcloud init
 ```
 
-1. kubectl
+### 2. kubectl
+
+```
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
 && chmod +x ./kubectl \
 && sudo mv ./kubectl /usr/local/bin/kubectl
+```
 
-2. kubectl config to GKE
+
+### 3. kubectl config to GKE
 [gcp introduction](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl)
 
+```
 gcloud container clusters get-credentials --zone [zone] [CLUSTER_NAME]
+```
 
+#### 3-1. TroubleShoot
 
+##### container.clusters.get permission
 ERROR: (gcloud.container.clusters.get-credentials) ResponseError: code=403, message=Required "container.clusters.get" permission(s) for "projects/gcp-test/zones/asia-northeast1-a/clusters/standard-cluster-1". See https://cloud.google.com/kubernetes-engine/docs/troubleshooting#gke_service_account_deleted for more info
+
 > gcloud config set container/use_client_certificate True
 
 > gcloud components update
@@ -44,32 +54,20 @@ ERROR: (gcloud.container.clusters.get-credentials) ResponseError: code=403, mess
 > gcloud init
 
 
+##### 'client' cannot list pods
 Error from server (Forbidden): pods is forbidden: User "client" cannot list pods
 
 > kubectl create rolebinding client-user-rolebinding --clusterrole=admin --user=$(gcloud config get-value account)
 
 
-3. helm install
-https://helm.sh/docs/using_helm/#installing-helm
-
-```
-tar -xzvf helm-v2.13.1-linux-amd64.tar.gz
-sudo mv linux-amd64/helm /usr/local/bin/helm
-```
-
-4. istio install
-https://istio.io/docs/setup/kubernetes/download/
-
-curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.2 sh -
-
-
 ## Debug Envoy
 envoy admin page 
-
+```
 kubectl -n istio-system port-forward [INGRESS-POD] 15000
-
+```
 istio-injection 
 
+```
 kubectl label namespace dev istio-injection=enabled
 kubectl get namespace -L istio-injection
----
+```
