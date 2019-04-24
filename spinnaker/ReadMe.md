@@ -84,3 +84,9 @@ where to deploy ?
 
 ### 5. Deploy
 - deploy
+
+
+### Question
+1. 왜 나는 어플리케이션에 이렇게 많이 나오지 ?
+2. createted / update / owner 정보 등은?
+

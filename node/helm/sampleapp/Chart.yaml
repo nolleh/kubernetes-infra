@@ -1,0 +1,17 @@
+name: sampleapp
+#version: 0.0.1
+# description: 한줄 설명 (옵션)
+# keywords:
+#   - 키워드 리스트. Chart 검색 시 이 키워드로 검색된다. (옵션)
+# home: 프로젝트 홈페이지 주소 (옵션)
+# sources:
+#   - 공개된 프로젝트 소스 코드 주소 (옵션)
+# maintainers: # (옵션)
+#   - name: 개발/관리자 이름 (각 개발/관리자 별 필수)
+#     email: 개발/관리자 이메일 주소 (각 개발/관리자 별 옵션)
+#     url: 개발/관리자 홈페이지 (각 개발/관리자 별 옵션)
+engine: gotpl # template 엔진 이름 정의 (옵션, 기본값은 gotpl)
+# icon: 아이콘 이미지를 사용할 경우 이미지 파일의 주소 (옵션).
+appVersion: v1 # 해당 Chart가 배포할 어플리케이션의 버젼 정보 (옵션).
+# deprecated: 해당 Chart의 deprecated 유무 (옵션, boolean값임)
+# tillerVersion: 해당 Chart를 지원하는 tiller 버젼의 범위를 지정함. 예를 들어 ">2.0.0" (옵션)

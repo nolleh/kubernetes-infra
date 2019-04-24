@@ -32,7 +32,7 @@ hal config features edit --artifacts true
 
 
 # 3. Choose Env
-hal config deploy edit --type distributed --account-name $ACCOUNT
+hal config deploy edit --type distributed --account-name my-k8s-v2-account
 
 # 4. Choose a storage service
 # service account 

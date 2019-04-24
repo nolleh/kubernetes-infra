@@ -1,0 +1,6 @@
+#!/bin/bash
+
+helm init -c
+mkdir -p packages
+
+helm package sampleapp --version 1.0.0 -d packages

@@ -6,7 +6,12 @@ in wsl(ubuntu18.04)
   - sample
 - elk
 - node
+  - helm
+      - helm chart
+  - sampleapp
+      - nodejs application
 - redis
+- spinnaker
 
 ## PreRequisions
 ### 1. gcloud SDK 
