@@ -4,3 +4,6 @@ elk/*
 
 **/packages
 upload-package
+
+*.swp
+*.env
