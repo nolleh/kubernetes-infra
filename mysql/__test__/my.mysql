@@ -1,0 +1,21 @@
+SELECT 0;
+
+CREATE DATABASE test;
+
+USE test;
+
+CREATE TABLE test.users (
+  id INT AUTO_INCREMENT,
+  uid VARCHAR(32),
+  name VARCHAR(32),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  UNIQUE INDEX (uid)
+);
+
+SHOW VARIABLES;
+SELECT * FROM test.users;
+
+INSERT INTO test.users(uid, name) VALUES('nolleh7707', 'nolleh');
