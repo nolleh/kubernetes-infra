@@ -18,4 +18,4 @@ CREATE TABLE test.users (
 SHOW VARIABLES;
 SELECT * FROM test.users;
 
-INSERT INTO test.users(uid, name) VALUES('nolleh7707', 'nolleh');
+INSERT INTO test.users(uid, name) VALUES ('nolleh7707', 'nolleh');
